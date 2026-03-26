@@ -2,6 +2,7 @@ package com.cesde.cityscooterapp.services;
 
 import com.cesde.cityscooterapp.domain.Driver;
 import com.cesde.cityscooterapp.repositories.DriverRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,12 +11,9 @@ import java.util.Optional;
 @Service
 public class DriverServiceImp implements DriverService {
 
+    @Autowired
+    private  DriverRepository driverRepository;
 
-    private final DriverRepository driverRepository;
-
-    DriverServiceImp(DriverRepository driverRepository){
-        this.driverRepository = driverRepository;
-    }
 
 
     @Override
@@ -31,6 +29,13 @@ public class DriverServiceImp implements DriverService {
 
     @Override
     public Optional<Driver> getDriverById(int id) {
-        return Optional.empty();
+
+        Driver driver = driverRepository.drivers.stream()
+                .filter(d -> d.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+
+        return Optional.ofNullable(driver);
     }
 }
